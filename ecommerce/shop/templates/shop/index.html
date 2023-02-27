@@ -1,0 +1,164 @@
+{% extends "shop/basic.html" %}
+{% block title%} shop home {% endblock %}
+{% block css %}
+<style>
+body{
+  background-color: #ffe5e5;
+}
+
+
+.col-md-3 
+{
+display: inline-block;
+margin-left:-4px;
+}
+.carousel-indicators .active {
+background-color: blue;
+}
+
+.col-md-3 img {
+  max-width: 283px;
+  height: 207px;
+}
+
+body .carousel-indicators li {
+background-color: rgb(162, 20, 20);
+
+}
+
+body .carousel-control-prev-icon,
+body .carousel-control-next-icon {
+  margin-top: 220px;
+background-color: rgb(67, 18, 231);
+
+
+}
+.carousel-control-next, .carousel-control-prev {
+  width:7%;
+  top: auto;
+  bottom: auto;
+}
+
+
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: .25rem;
+  width: 227px;
+  height: 25rem;
+}
+
+.no-padding {
+padding-left: 0px;
+padding-right: 0px;
+}
+</style>
+{% endblock %}
+
+
+
+
+{% block body%}
+{% load static %}
+<div class="container">
+  {% for products, range, nslides in allprods %}
+  <div class="row">
+  <h1>{{products.0.category}}</h1>
+  <div id="demo{{forloop.counter}}" class="carousel slide my-3" data-ride="carousel">
+    <ul class="carousel-indicators">
+      <li data-target="#demo{{forloop.counter}}" data-slide-to="0" class="active"></li>
+     {% for i in range %}
+      <li data-target="#demo{{forloop.parentloop.counter}}" data-slide-to={{i}}></li>
+      {% endfor %}
+    </ul>
+
+
+
+    <div class="container carousel-inner no-padding">
+      <div class="carousel-item active">
+        <!-- <div class="col-xs-3 col-sm-3 col-md-3">
+          <div class="card" style="width: 18rem;">
+            <img src="/media/{{product.0.image}}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">{{product.0.product_name}}</h5>
+              <p class="card-text">{{product.0.description}}</p>
+              <button id="pr{{product.0.id}}" class="btn btn-primary cart">Add To Cart</button>
+            </div>
+          </div>
+        </div> -->
+
+
+        {% for i in products%}
+        <!-- </div> -->
+        <div class="col-xs-3 col-sm-3 col-md-3">
+          <div class="card align-items-center" style="width: 18rem;">
+            <img src="/media/{{i.image}}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title" id="namepr{{i.id}}">{{i.product_name}}</h5>
+              <p class="card-text">{{i.description|slice:"0:53"}}...</p>
+              
+              <h5 class="card-title" >Rs.<span id="pricepr{{i.id}}"> {{i.price}} </span></h5>
+              <span id="divpr{{i.id}}" class="divpr">
+              <button  id="pr{{i.id}}" class="btn btn-primary cart">Add To Cart</button>
+            </span>
+
+              <a href="/shop/products/{{i.id}}"><button  id="qv{{i.id}}" class="btn btn-primary qvcart mx-2">QuickView</button></a>
+            </div>
+          </div>
+        </div>
+        {% if forloop.counter|divisibleby:4 and forloop.counter > 0 and not forloop.last%}
+      </div><div class="carousel-item">
+
+        {% endif %}
+
+
+
+        {% endfor %}
+
+        <!-- for providing + - span in card -->
+        <!-- "<button id='minus"+item+ "'class='btn btn-primary minus'>-</button><span id='val "+item+"''> "+ cart[item] +"</span><button id='plus"+item+"' class="btn btn-primary plus">+</button>" -->
+        
+
+
+
+    
+
+
+
+   
+
+
+
+
+      </div>
+  </div>
+  </div>
+  <a class="carousel-control-prev " href="#demo{{forloop.counter}}" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only"></span>
+  </a>
+  <a class="carousel-control-next" href="#demo{{forloop.counter}}" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only"></span>
+  </a>
+</div>
+  
+  {% endfor %}
+
+  </div>
+
+  {% endblock %}
+
+
+
+  {% block js %} 
+  
+  
+  {% endblock %}

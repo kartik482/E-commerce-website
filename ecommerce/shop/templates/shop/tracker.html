@@ -1,0 +1,130 @@
+{% extends "shop/basic.html" %}
+{% block title%} TRACKER {% endblock %}
+{% block body%}
+<div class="container">
+  <div class="col">
+    <h2>Track Your Orders Here,Enter your order id and email address to track your order</h2>
+    <form class="row g-3" method="post" action="#" id="trackerform"> {% csrf_token %}
+      <input type="hidden" name="itemsJSON" id="itemsJSON">
+      <div class="col-md-6">
+        <label for="order_id" class="form-label">Order ID</label>
+        <input type="name" class="form-control" id="order_id" placeholder="Enter Order-ID" name="order_id">
+      </div>
+      <div class="col-md-6">
+        <label for="inputEmail4" class="form-label">Email</label>
+        <input type="email" class="form-control" id="inputEmail4" placeholder="Enter Your Email" name="email">
+      </div>
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary">Track Order</button>
+      </div>
+
+
+  </div>
+  <div class="col my-5">
+    <h2>Your Order Status:</h2>
+    <div>
+      <ul class="list-group" id="items">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Your Data Will Appear Here
+
+
+        </li>
+
+
+      </ul>
+      <h2>Your Order Details:</h2>
+      <ul class="list-group" id="citems">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Your Item Will Appear Here:
+
+
+        </li>
+
+
+      </ul>
+    </div>
+
+
+
+  </div>
+
+</div>
+
+{% endblock %}
+
+
+
+{% block js %}
+<script>
+  $("#trackerform").submit(function (event) {
+
+    $("#items").empty()
+    $("#citems").empty()
+    var formdata = {
+      "order_id": $("input[name=order_id]").val(),
+      "email": $("input[name=email]").val(),
+      "csrfmiddlewaretoken": $("input[name=csrfmiddlewaretoken]").val()
+    }
+
+    $.ajax({
+      type: "POST",
+      url: "/shop/tracker/",
+      data: formdata,
+      encode: true
+
+    })
+      .done(function (data) {
+        // console.log(data)
+        // $('#citems').empty();
+        data = JSON.parse(data)
+        updates = data[0]
+
+        // updates = JSON.parse(data)
+        if ((data.length) > 0 & (data) != {}) {
+          for (let i = 0; i < data.length; i++) {
+            let text = updates[i]["text"]
+            let time = updates[i]["time"]
+            mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                    ${text}
+                    <span class="badge bg-primary rounded-pill">${time}</span>
+                </li>`
+            $("#items").append(mystr);
+          }
+
+          cart = JSON.parse(data[1])
+          // console.log(cart)
+          for (item in cart) {
+
+            let name = cart[item][1]
+            let qty = cart[item][0]
+            // sum=sum+cart[item][0]
+            mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                  ${name}
+                  <span class="badge bg-primary rounded-pill">${qty}</span>
+              </li>`
+            $("#citems").append(mystr);
+          }
+          console.log(mystr)
+        }
+        else {
+          mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                    sorry, data not found
+                </li>`
+          $("#items").append(mystr);
+          $("#citems").append(mystr);
+          // mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+          //           sorry, data not found
+          //       </li>`
+
+
+        }
+        //fill in the ordered detail
+
+
+      })
+    event.preventDefault()
+  })
+
+
+</script>
+{% endblock %}

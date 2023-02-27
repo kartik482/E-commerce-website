@@ -1,0 +1,29 @@
+{% extends "shop/basic.html" %}
+{% block title%} {{accessprod.product_name}} {% endblock %} 
+{% block body%}
+
+<div class="container">
+    <div class="row">
+    <div class="col-md-4">
+        <div class="row">
+            <img src="/media/{{accessprod.image}}" alt="">
+        </div>
+        <div class="row">
+            <button   class="btn btn-primary" style="width:181px;">Buy Now </button>
+            <button   class="btn btn-primary mx-3" style="width:181px;">Add To Cart</button>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <h5>{{accessprod.product_name}}</h5>
+        <p>{{accessprod.description}}</p>
+        <p><b>MRP Rs.</b>{{accessprod.price}}</p>
+
+    </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock %} 
